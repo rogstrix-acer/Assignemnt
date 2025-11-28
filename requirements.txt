@@ -1,0 +1,7 @@
+FastAPI
+SQLAlchemy
+asyncpg
+pydantic
+uvicorn
+alembic
+python-dotenv
