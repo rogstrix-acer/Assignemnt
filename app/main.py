@@ -10,6 +10,6 @@ Base.metadata.create_all(bind=engine)
 
 # Include routers
 app.include_router(members.router)
-app.include_router(plans.router)
-app.include_router(subscriptions.router)
+app.include_router(plans.router, prefix="/plans", tags=["plans"])
+app.include_router(subscriptions.router, prefix="/subscriptions", tags=["subscriptions"])
 app.include_router(attendance.router)

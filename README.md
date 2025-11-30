@@ -24,86 +24,176 @@ service-membership-system
 ## Setup Instructions
 
 1. **Create and activate a virtual environment:**
-   ```
+   ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   # Windows
+   venv\Scripts\activate
+   # Linux/Mac
+   source venv/bin/activate
    ```
 
 2. **Install dependencies:**
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 
 3. **Configure the database:**
-   Set the `DATABASE_URL` environment variable in your `.env` file or directly in your environment. Example for PostgreSQL:
-   ```
-   DATABASE_URL=postgresql://username:password@localhost/dbname
+   Set the `DATABASE_URL` environment variable in your `.env` file.
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/dbname"
    ```
 
 4. **Create tables and apply the trigger:**
    Run the SQL commands in `triggers.sql` to set up the database schema and trigger:
-   ```
+   ```bash
    psql -U username -d dbname -f triggers.sql
    ```
 
 5. **Start the application:**
-   ```
+   ```bash
    uvicorn app.main:app --reload
    ```
 
-## API Endpoints
+## API Documentation
 
 ### Members
-- **POST /members**: Create a new member.
-- **GET /members**: List all members (optional query parameter: status).
 
-### Plans
-- **POST /plans**: Create a new plan.
-- **GET /plans**: List all plans.
+#### Create Member
+**Endpoint:** `POST /members`
 
-### Subscriptions
-- **POST /subscriptions**: Create a subscription for a member.
-- **GET /members/{member_id}/current-subscription**: Retrieve the current active subscription for a member.
-
-### Attendance
-- **POST /attendance/check-in**: Check in a member.
-- **GET /members/{member_id}/attendance**: Retrieve attendance records for a member.
-
-## Example Requests
-
-### Create a Member
-```
-POST /members
+**Request Body:**
+```json
 {
   "name": "John Doe",
   "phone": "1234567890"
 }
 ```
 
-### List Members
-```
-GET /members?status=active
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "phone": "1234567890",
+  "join_date": "2023-10-27T10:00:00",
+  "status": "active",
+  "total_check_ins": 0
+}
 ```
 
-### Create a Plan
+#### List Members
+**Endpoint:** `GET /members`
+**Query Parameters:** `status` (optional, e.g., `active`)
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "phone": "1234567890",
+    "join_date": "2023-10-27T10:00:00",
+    "status": "active",
+    "total_check_ins": 0
+  }
+]
 ```
-POST /plans
+
+### Plans
+
+#### Create Plan
+**Endpoint:** `POST /plans/`
+
+**Request Body:**
+```json
 {
-  "name": "Monthly",
-  "price": 29.99,
+  "name": "Gold Plan",
+  "price": 100.0,
   "duration_days": 30
 }
 ```
 
-### Check In a Member
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "Gold Plan",
+  "price": 100.0,
+  "duration_days": 30
+}
 ```
-POST /attendance/check-in
+
+#### List Plans
+**Endpoint:** `GET /plans/`
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Gold Plan",
+    "price": 100.0,
+    "duration_days": 30
+  }
+]
+```
+
+### Subscriptions
+
+#### Create Subscription
+**Endpoint:** `POST /subscriptions/`
+
+**Request Body:**
+```json
+{
+  "member_id": 1,
+  "plan_id": 1,
+  "start_date": "2023-10-27T10:00:00"
+}
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "member_id": 1,
+  "plan_id": 1,
+  "start_date": "2023-10-27T10:00:00",
+  "end_date": "2023-11-26T10:00:00"
+}
+```
+
+#### Get Current Subscription
+**Endpoint:** `GET /subscriptions/members/{member_id}/current`
+
+**Response:**
+```json
+{
+  "id": 1,
+  "member_id": 1,
+  "plan_id": 1,
+  "start_date": "2023-10-27T10:00:00",
+  "end_date": "2023-11-26T10:00:00"
+}
+```
+
+### Attendance
+
+#### Check In
+**Endpoint:** `POST /attendance/check-in`
+
+**Request Body:**
+```json
 {
   "member_id": 1
 }
 ```
 
-## Notes
-- Ensure that PostgreSQL is running and accessible.
-- Modify the `requirements.txt` file as needed to include any additional dependencies.
-- The project is structured for clarity and maintainability, following best practices for FastAPI applications.
+**Response:**
+```json
+{
+  "id": 1,
+  "member_id": 1,
+  "check_in_time": "2023-10-28T09:00:00"
+}
+```
