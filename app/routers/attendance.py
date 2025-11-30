@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models import Attendance, Member
+from app.models import Attendance, Member, Subscription
 from app.schemas import AttendanceCreate, AttendanceResponse
 from datetime import datetime
 

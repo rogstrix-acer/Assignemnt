@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app import models, schemas, database
+from datetime import timedelta, datetime
 
 router = APIRouter()
 
-@router.post("/", response_model=schemas.Subscription)
+@router.post("/", response_model=schemas.SubscriptionResponse)
 def create_subscription(subscription: schemas.SubscriptionCreate, db: Session = Depends(database.get_db)):
     member = db.query(models.Member).filter(models.Member.id == subscription.member_id).first()
     plan = db.query(models.Plan).filter(models.Plan.id == subscription.plan_id).first()
@@ -28,7 +29,7 @@ def create_subscription(subscription: schemas.SubscriptionCreate, db: Session = 
     
     return new_subscription
 
-@router.get("/members/{member_id}/current", response_model=schemas.Subscription)
+@router.get("/members/{member_id}/current", response_model=schemas.SubscriptionResponse)
 def get_current_subscription(member_id: int, db: Session = Depends(database.get_db)):
     today = datetime.utcnow()
     subscription = db.query(models.Subscription).filter(
