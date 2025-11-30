@@ -148,9 +148,10 @@ service-membership-system
 {
   "member_id": 1,
   "plan_id": 1,
-  "start_date": "2023-10-27T10:00:00"
+  "start_date": "2025-11-30T10:00:00" 
 }
 ```
+*(Note: Ensure `start_date` is current)*
 
 **Response:**
 ```json
@@ -158,8 +159,8 @@ service-membership-system
   "id": 1,
   "member_id": 1,
   "plan_id": 1,
-  "start_date": "2023-10-27T10:00:00",
-  "end_date": "2023-11-26T10:00:00"
+  "start_date": "2025-11-30T10:00:00",
+  "end_date": "2025-12-30T10:00:00"
 }
 ```
 
@@ -172,8 +173,8 @@ service-membership-system
   "id": 1,
   "member_id": 1,
   "plan_id": 1,
-  "start_date": "2023-10-27T10:00:00",
-  "end_date": "2023-11-26T10:00:00"
+  "start_date": "2025-11-30T10:00:00",
+  "end_date": "2025-12-30T10:00:00"
 }
 ```
 
@@ -194,6 +195,6 @@ service-membership-system
 {
   "id": 1,
   "member_id": 1,
-  "check_in_time": "2023-10-28T09:00:00"
+  "check_in_time": "2025-11-30T10:00:00"
 }
 ```

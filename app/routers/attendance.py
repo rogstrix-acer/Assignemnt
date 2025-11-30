@@ -16,15 +16,15 @@ def check_in(attendance: AttendanceCreate, db: Session = Depends(get_db)):
     # Check if the member has an active subscription
     current_subscription = db.query(Subscription).filter(
         Subscription.member_id == member.id,
-        Subscription.start_date <= datetime.now(),
-        Subscription.end_date >= datetime.now()
+        Subscription.start_date <= datetime.utcnow(),
+        Subscription.end_date >= datetime.utcnow()
     ).first()
     
     if not current_subscription:
         raise HTTPException(status_code=400, detail="No active subscription for this member")
     
     # Create attendance record
-    new_attendance = Attendance(member_id=attendance.member_id, check_in_time=datetime.now())
+    new_attendance = Attendance(member_id=attendance.member_id, check_in_time=datetime.utcnow())
     db.add(new_attendance)
     db.commit()
     db.refresh(new_attendance)
